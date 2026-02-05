@@ -1,26 +1,485 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-dm-sans);
+  --font-serif: var(--font-dm-serif);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --radius: 0.5rem;
+
+  /* Bold Professional Palette */
+  --background: #F5F5F0;
+  --foreground: #1A1A1A;
+  --card: #FFFFFF;
+  --card-foreground: #1A1A1A;
+  --popover: #FFFFFF;
+  --popover-foreground: #1A1A1A;
+  --primary: #0047FF;
+  --primary-foreground: #FFFFFF;
+  --secondary: #EBEBEB;
+  --secondary-foreground: #1A1A1A;
+  --muted: #E8E8E3;
+  --muted-foreground: #6B6B6B;
+  --accent: #E0ECFF;
+  --accent-foreground: #0047FF;
+  --destructive: #D92626;
+  --border: #D4D4CF;
+  --input: #D4D4CF;
+  --ring: #0047FF;
+
+  --chart-1: #0047FF;
+  --chart-2: #1A1A1A;
+  --chart-3: #6B6B6B;
+  --chart-4: #999990;
+  --chart-5: #D4D4CF;
+
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #1A1A1A;
+  --sidebar-primary: #0047FF;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #E0ECFF;
+  --sidebar-accent-foreground: #0047FF;
+  --sidebar-border: #D4D4CF;
+  --sidebar-ring: #0047FF;
+}
+
+.dark {
+  --background: #0A0A0A;
+  --foreground: #FAFAFA;
+  --card: #171717;
+  --card-foreground: #FAFAFA;
+  --popover: #171717;
+  --popover-foreground: #FAFAFA;
+  --primary: #3B82F6;
+  --primary-foreground: #0A0A0A;
+  --secondary: #262626;
+  --secondary-foreground: #FAFAFA;
+  --muted: #262626;
+  --muted-foreground: #A3A3A3;
+  --accent: #1E3A5F;
+  --accent-foreground: #3B82F6;
+  --destructive: #EF4444;
+  --border: #262626;
+  --input: #262626;
+  --ring: #3B82F6;
+  --sidebar: #171717;
+  --sidebar-foreground: #FAFAFA;
+  --sidebar-primary: #3B82F6;
+  --sidebar-primary-foreground: #0A0A0A;
+  --sidebar-accent: #1E3A5F;
+  --sidebar-accent-foreground: #3B82F6;
+  --sidebar-border: #262626;
+  --sidebar-ring: #3B82F6;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Font utilities */
+.font-serif {
+  font-family: var(--font-dm-serif), Georgia, serif;
+}
+
+/* Animations */
+@keyframes gauge-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+.gauge-fill {
+  transform-origin: left;
+  animation: gauge-fill 0.6s ease-out forwards;
+}
+
+/* ═══════════════════════════════════════════════
+   React Big Calendar — Bold Professional Theme
+   ═══════════════════════════════════════════════ */
+
+.rbc-wrapper {
+  width: 100%;
+  height: 620px;
+  padding: 0 16px 16px;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+}
+
+.rbc-wrapper .rbc-calendar {
+  height: 100%;
+  font-family: inherit;
+}
+
+/* Reset Tailwind preflight only for calendar grid (not toolbar) */
+.rbc-month-view *,
+.rbc-month-view *::before,
+.rbc-month-view *::after,
+.rbc-time-view *,
+.rbc-time-view *::before,
+.rbc-time-view *::after {
+  border-style: revert;
+  border-width: revert;
+}
+
+/* ── Toolbar ── */
+.rbc-toolbar {
+  padding: 20px 0;
+  margin-bottom: 0;
+  gap: 12px;
+  align-items: center;
+}
+
+.rbc-toolbar button {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  padding: 7px 16px;
+  border: 1.5px solid #D4D4CF;
+  border-radius: 8px;
+  color: #6B6B6B;
+  background: #FFFFFF;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.rbc-toolbar button:hover {
+  background: #F5F5F0;
+  color: #1A1A1A;
+  border-color: #B0B0A8;
+}
+
+.rbc-toolbar button.rbc-active {
+  background: #0047FF;
+  color: #FFFFFF;
+  border-color: #0047FF;
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(0, 71, 255, 0.25);
+}
+
+/* Navigation arrows */
+.rbc-btn-group:first-child button {
+  padding: 7px 12px;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.rbc-toolbar-label {
+  font-size: 1.375rem;
+  font-weight: 400;
+  font-family: var(--font-dm-serif), Georgia, serif;
+  color: #1A1A1A;
+  text-transform: capitalize;
+  letter-spacing: -0.02em;
+}
+
+/* ── Day Headers ── */
+.rbc-header {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #999990;
+  padding: 10px 4px;
+  border-bottom: 1px solid #D4D4CF;
+  background: #F5F5F0;
+}
+
+.rbc-header + .rbc-header {
+  border-left: 1px solid #D4D4CF;
+}
+
+/* ── Month View ── */
+.rbc-month-view {
+  border: 1px solid #D4D4CF;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.rbc-month-row {
+  min-height: 88px;
+}
+
+.rbc-day-bg {
+  transition: background-color 0.15s ease;
+}
+
+.rbc-day-bg:hover {
+  background-color: rgba(0, 71, 255, 0.02);
+}
+
+.rbc-day-bg + .rbc-day-bg {
+  border-left: 1px solid #EBEBEB;
+}
+
+.rbc-month-row + .rbc-month-row {
+  border-top: 1px solid #EBEBEB;
+}
+
+.rbc-off-range-bg {
+  background: #F8F8F5;
+}
+
+.rbc-today {
+  background: rgba(0, 71, 255, 0.03);
+  position: relative;
+}
+
+/* Blue accent line on today column */
+.rbc-today::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background: #0047FF;
+}
+
+/* ── Date Numbers ── */
+.rbc-date-cell {
+  padding: 6px 8px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #999990;
+  text-align: right;
+}
+
+.rbc-date-cell.rbc-now {
+  font-weight: 700;
+  color: #0047FF;
+}
+
+/* Today badge - blue pill */
+.rbc-date-cell.rbc-now a,
+.rbc-date-cell.rbc-now button {
+  background: #0047FF;
+  color: #FFFFFF !important;
+  border-radius: 100px;
+  padding: 2px 8px;
+  font-weight: 700;
+  font-size: 0.75rem;
+  display: inline-block;
+  line-height: 1.4;
+}
+
+.rbc-off-range {
+  color: #D4D4CF;
+}
+
+/* ── Events ── */
+.rbc-event {
+  padding: 3px 8px !important;
+  font-size: 0.6875rem;
+  outline: none;
+  cursor: pointer;
+  border-radius: 6px !important;
+  border-top: none !important;
+  border-right: none !important;
+  display: flex !important;
+  align-items: center;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+/* Lesson chip — deep blue accent */
+.rbc-event--lesson {
+  background-color: #E0ECFF !important;
+  color: #1A1A1A !important;
+  border-left: 3px solid #0047FF !important;
+  border-bottom: 1px solid rgba(0, 71, 255, 0.15) !important;
+}
+
+/* Exam chip — red accent */
+.rbc-event--exam {
+  background-color: #FDE8E8 !important;
+  color: #1A1A1A !important;
+  border-left: 3px solid #D92626 !important;
+  border-bottom: 1px solid rgba(217, 38, 38, 0.18) !important;
+}
+
+/* Month events — compact, single-line */
+.rbc-month-view .rbc-event {
+  padding: 2px 6px !important;
+  min-height: 22px;
+}
+
+/* Week/Day events — taller, stretch for multi-line content */
+.rbc-day-slot .rbc-event {
+  padding: 4px 8px !important;
+  align-items: stretch;
+}
+
+.rbc-event:hover {
+  box-shadow: 0 2px 8px rgba(0, 71, 255, 0.18);
+  transform: translateY(-1px);
+  z-index: 10;
+}
+
+.rbc-event:focus {
+  outline: 2px solid #0047FF;
+  outline-offset: 1px;
+}
+
+.rbc-event-label {
+  display: none;
+}
+
+.rbc-row-segment {
+  padding: 0 4px 2px;
+}
+
+.rbc-show-more {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #0047FF;
+  padding: 2px 8px;
+  background: none;
+  cursor: pointer;
+}
+
+.rbc-show-more:hover {
+  text-decoration: underline;
+}
+
+/* ── Week/Day Time View ── */
+.rbc-time-view {
+  border: 1px solid #D4D4CF;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Hide empty all-day row */
+.rbc-allday-cell {
+  display: none !important;
+}
+
+.rbc-time-header-content {
+  border-left: 1px solid #D4D4CF;
+}
+
+.rbc-time-content {
+  border-top: 1px solid #D4D4CF;
+}
+
+.rbc-timeslot-group {
+  min-height: 48px;
+  border-bottom: 1px solid #EBEBEB;
+}
+
+.rbc-time-slot {
+  font-size: 0.75rem;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  color: #999990;
+}
+
+.rbc-label {
+  font-size: 0.6875rem;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+  color: #999990;
+  padding: 0 10px;
+}
+
+.rbc-current-time-indicator {
+  background: #0047FF;
+  height: 2px;
+  box-shadow: 0 0 6px rgba(0, 71, 255, 0.4);
+}
+
+/* Dot on current time indicator */
+.rbc-current-time-indicator::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  top: -3px;
+  width: 8px;
+  height: 8px;
+  background: #0047FF;
+  border-radius: 50%;
+}
+
+.rbc-day-slot .rbc-time-slot {
+  border-top: none;
+}
+
+.rbc-day-slot .rbc-event {
+  border-radius: 6px;
+}
+
+/* ── Selection ── */
+.rbc-slot-selection {
+  background: rgba(0, 71, 255, 0.08);
+  border: 1px dashed rgba(0, 71, 255, 0.35);
+  border-radius: 6px;
+}
+
+/* ── Popup Overlay ── */
+.rbc-overlay {
+  border: 1px solid #D4D4CF;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 8px;
+  background: #FFFFFF;
+  z-index: 50;
+}
+
+.rbc-overlay-header {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #1A1A1A;
+  padding: 6px 8px 8px;
+  border-bottom: 1px solid #EBEBEB;
+  margin-bottom: 4px;
+}
+
+/* ── Print ── */
+@media print {
+  .no-print { display: none !important; }
+  .rbc-event {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
 }
